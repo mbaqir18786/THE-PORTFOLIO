@@ -14,8 +14,8 @@ interface Product {
   year: string
   desc: string
   stack: string[]
-  proof: string
   color: string
+  link?: string
 }
 
 const PRODUCTS: Product[] = [
@@ -26,9 +26,9 @@ const PRODUCTS: Product[] = [
     org: 'KJSCE Alumni Cell',
     year: '2025',
     desc: 'Multiple event registration portals. Google Sheets backend, automated email + ticket PDFs via Gmail on every signup. Zero manual work for organisers.',
-    stack: ['HTML/CSS/JS', 'Google Apps Script', 'Vercel', 'MailApp'],
-    proof: 'Zero manual emails. DB auto-populated on every registration.',
+    stack: ['React', 'Google Apps Script', 'Vercel', 'MailApp'],
     color: 'var(--signal)',
+    link: 'https://kickstart-26.vercel.app/',
   },
   {
     num: '02',
@@ -36,10 +36,10 @@ const PRODUCTS: Product[] = [
     type: 'Web + Payments',
     org: 'KJSCE Alumni Cell',
     year: '2025',
-    desc: 'End-to-end ticketed event website. Students register, pay via UPI, submit transaction ID — system validates and fires a ticket PDF to their inbox.',
-    stack: ['HTML/CSS/JS', 'Apps Script', 'UPI Flow', 'Gmail API'],
-    proof: 'Handled real money flow for a live college event.',
+    desc: 'End-to-end ticketed event website. Students register, pay via UPI, submit transaction ID  system validates and fires a ticket PDF to their inbox.',
+    stack: ['React', 'Apps Script', 'UPI Flow', 'Gmail API'],
     color: 'var(--alert)',
+    link: 'https://kickstart-26.vercel.app/',
   },
   {
     num: '03',
@@ -47,10 +47,10 @@ const PRODUCTS: Product[] = [
     type: 'Website + Admin Panel',
     org: 'KJSCE Faculty',
     year: '2024',
-    desc: 'Fully editable portfolio for a professor — no coding needed. Custom admin panel where every section is editable in-browser. Live on save.',
+    desc: 'Fully editable portfolio for a professor no coding needed. Custom admin panel where every section is editable in-browser. Live on save.',
     stack: ['React', 'Node.js', 'MongoDB', 'Custom CMS'],
-    proof: 'Non-technical user, full content control, no dev needed.',
     color: 'var(--violet)',
+    link: 'https://dr-v-v.vercel.app/',
   },
   {
     num: '04',
@@ -60,21 +60,202 @@ const PRODUCTS: Product[] = [
     year: '2024',
     desc: 'Coursera-style LMS. Upload courses, MCQ, T/F, Match the Following, Fill in the Blank, Lab Activity, short/long answers. Full admin CRUD. Led a 5-person team.',
     stack: ['React', 'Node.js', 'PostgreSQL', 'REST API'],
-    proof: '6 assessment types, one platform. Built as team lead.',
     color: 'var(--mint)',
+    link: 'https://lms-self-theta.vercel.app/',
   },
   {
-    num: '05',
-    name: 'EllanorAI — Cloud Services Site',
-    type: 'Startup Website',
-    org: 'EllanorAI (Internship)',
-    year: '2024',
-    desc: 'Startup had no website. Built their full marketing site for cloud services from scratch — design to deployment, solo, in 3 months.',
-    stack: ['HTML/CSS/JS', 'Figma', 'Vercel'],
-    proof: 'Zero to live in 3 months. First real client delivery.',
-    color: 'var(--signal)',
-  },
+  num: '05',
+  name: 'Personal Portfolio',
+  type: 'Interactive Web Experience',
+  org: 'Personal',
+  year: '2025',
+  desc: 'This site. Built and rebuilt from scratch  custom WebGL/Three.js scenes, GSAP scroll choreography, Lenis-smoothed scrolling, and physics-based interactions, with every bug traced down to root cause.',
+  stack: ['React', 'Three.js', 'GSAP', 'Lenis', 'TypeScript'],
+  color: 'var(--violet)',
+  link: '#',
+},
 ]
+
+// Mobile-only overrides, injected once. Desktop layout/styles are untouched.
+function ResponsiveStyles() {
+  return (
+    <style>{`
+      @media (max-width: 640px) {
+        .product-row {
+          flex-direction: column !important;
+          gap: 0.85rem !important;
+        }
+        .product-num {
+          min-width: auto !important;
+          font-size: 2.4rem !important;
+        }
+        .product-meta-row {
+          gap: 0.5rem !important;
+        }
+        .product-meta-row > span:last-child {
+          margin-left: 0 !important;
+        }
+        
+        .product-card {
+          padding: 1.75rem 0 !important;
+        }
+
+        .product-link-btn {
+          width: 100% !important;
+          justify-content: space-between !important;
+        }
+      }
+
+      @media (max-width: 420px) {
+        .product-name {
+          font-size: 1.3rem !important;
+        }
+        .product-desc {
+          font-size: 0.82rem !important;
+        }
+      }
+
+      .product-link-btn {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        overflow: hidden;
+        background: transparent;
+        cursor: pointer;
+        text-decoration: none;
+        padding: 0.55rem 1rem 0.55rem 1.1rem;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        isolation: isolate;
+      }
+
+      .product-link-fill {
+        position: absolute;
+        inset: 0;
+        border-radius: 999px;
+        transform: scale(0);
+        transform-origin: center;
+        z-index: -1;
+        pointer-events: none;
+      }
+
+      .product-link-arrow {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transform: translate(0, 0);
+      }
+
+      .product-link-arrow svg {
+        display: block;
+      }
+    `}</style>
+  )
+}
+
+function ProductLinkButton({ product }: { product: Product }) {
+  const btnRef = useRef<HTMLAnchorElement>(null)
+  const fillRef = useRef<HTMLSpanElement>(null)
+  const labelRef = useRef<HTMLSpanElement>(null)
+  const arrowRef = useRef<HTMLSpanElement>(null)
+
+  useLayoutEffect(() => {
+    const btn = btnRef.current
+    const fill = fillRef.current
+    const label = labelRef.current
+    const arrow = arrowRef.current
+    if (!btn || !fill || !label || !arrow) return
+
+    const tl = gsap.timeline({ paused: true })
+    tl.to(fill, { scale: 1, duration: 0.5, ease: 'power3.out' }, 0)
+      .to(label, { color: 'var(--paper)', duration: 0.3, ease: 'power2.out' }, 0.05)
+      .to(arrow, { x: 4, color: 'var(--paper)', duration: 0.45, ease: 'power3.out' }, 0)
+      .to(btn, { borderColor: product.color, duration: 0.4, ease: 'power2.out' }, 0)
+
+    let raf = 0
+    const handleEnter = (e: MouseEvent) => {
+      const rect = btn.getBoundingClientRect()
+      const originX = ((e.clientX - rect.left) / rect.width) * 100
+      const originY = ((e.clientY - rect.top) / rect.height) * 100
+      gsap.set(fill, { transformOrigin: `${originX}% ${originY}%` })
+      tl.play()
+    }
+    const handleLeave = () => {
+      tl.reverse()
+    }
+    const handleMove = (e: MouseEvent) => {
+      cancelAnimationFrame(raf)
+      raf = requestAnimationFrame(() => {
+        const rect = btn.getBoundingClientRect()
+        const relX = (e.clientX - rect.left - rect.width / 2) * 0.18
+        const relY = (e.clientY - rect.top - rect.height / 2) * 0.4
+        gsap.to(btn, { x: relX, y: relY, duration: 0.4, ease: 'power3.out' })
+      })
+    }
+    const handleMoveLeave = () => {
+      gsap.to(btn, { x: 0, y: 0, duration: 0.6, ease: 'elastic.out(1, 0.5)' })
+    }
+
+    btn.addEventListener('mouseenter', handleEnter)
+    btn.addEventListener('mouseleave', handleLeave)
+    btn.addEventListener('mousemove', handleMove)
+    btn.addEventListener('mouseleave', handleMoveLeave)
+
+    return () => {
+      btn.removeEventListener('mouseenter', handleEnter)
+      btn.removeEventListener('mouseleave', handleLeave)
+      btn.removeEventListener('mousemove', handleMove)
+      btn.removeEventListener('mouseleave', handleMoveLeave)
+      cancelAnimationFrame(raf)
+      tl.kill()
+      gsap.killTweensOf([btn, fill, label, arrow])
+    }
+  }, [product.color])
+
+  return (
+    <a
+      ref={btnRef}
+      href={product.link || '#'}
+      target={product.link && product.link !== '#' ? '_blank' : undefined}
+      rel={product.link && product.link !== '#' ? 'noopener noreferrer' : undefined}
+      className="product-link-btn"
+      aria-label={`View ${product.name}`}
+    >
+      <span
+        ref={fillRef}
+        className="product-link-fill"
+        style={{ background: product.color }}
+      />
+      <span
+        ref={labelRef}
+        style={{
+          fontFamily: '"Space Mono",monospace',
+          fontSize: '0.62rem',
+          fontWeight: 700,
+          letterSpacing: '0.08em',
+          textTransform: 'uppercase',
+          color: 'var(--ink)',
+          position: 'relative',
+          zIndex: 1,
+        }}
+      >
+        View Project
+      </span>
+      <span ref={arrowRef} className="product-link-arrow" style={{ color: 'var(--ink)', position: 'relative', zIndex: 1 }}>
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+          <path
+            d="M2 11L11 2M11 2H4M11 2V9"
+            stroke="currentColor"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </span>
+    </a>
+  )
+}
 
 function ProductCard({ product }: { product: Product }) {
   const cardRef = useRef<HTMLDivElement>(null)
@@ -83,16 +264,12 @@ function ProductCard({ product }: { product: Product }) {
   const descRef = useRef<HTMLParagraphElement>(null)
   const proofRef = useRef<HTMLDivElement>(null)
   const stackRef = useRef<HTMLDivElement>(null)
+  const linkRef = useRef<HTMLDivElement>(null)
   const lineRef = useRef<HTMLDivElement>(null)
 
-  // Parallax on the proof pill, tied to this card's own scroll progress.
   const { scrollYProgress } = useScroll({ target: cardRef, offset: ['start end', 'end start'] })
   const ySmooth = useSpring(useTransform(scrollYProgress, [0, 1], [30, -30]), { stiffness: 60, damping: 18 })
 
-  // Hover micro-interaction: set up once, torn down on unmount. Using
-  // useLayoutEffect + addEventListener (instead of inline onMouseEnter/Leave)
-  // avoids re-binding closures over `product.color` on every render and
-  // guarantees the listeners are removed if the card unmounts mid-animation.
   useLayoutEffect(() => {
     const card = cardRef.current
     if (!card) return
@@ -116,10 +293,6 @@ function ProductCard({ product }: { product: Product }) {
     }
   }, [product.color])
 
-  // Reveal-on-scroll timeline, scoped with gsap.context so every tween and
-  // ScrollTrigger it creates is automatically reverted/killed on unmount —
-  // this is what prevents orphaned ScrollTriggers piling up as cards
-  // mount/unmount (the main source of the memory leak in the old version).
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
@@ -146,13 +319,14 @@ function ProductCard({ product }: { product: Product }) {
 
       tl.fromTo(proofRef.current, { x: -14, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6 }, 0.58)
       tl.fromTo(stackRef.current, { y: 8, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, 0.68)
+      tl.fromTo(linkRef.current, { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, 0.78)
     }, cardRef)
 
     return () => ctx.revert()
   }, [])
 
   return (
-    <div ref={cardRef} style={{ position: 'relative', padding: 'clamp(2rem,5vw,3.5rem) 0', cursor: 'default' }}>
+    <div ref={cardRef} className="product-card" style={{ position: 'relative', padding: 'clamp(2rem,5vw,3.5rem) 0', cursor: 'default' }}>
       <div
         ref={lineRef}
         style={{
@@ -166,10 +340,10 @@ function ProductCard({ product }: { product: Product }) {
         }}
       />
 
-      <div style={{ display: 'flex', gap: 'clamp(1.2rem,4vw,3rem)', alignItems: 'flex-start' }}>
-        {/* Number */}
+      <div className="product-row" style={{ display: 'flex', gap: 'clamp(1.2rem,4vw,3rem)', alignItems: 'flex-start' }}>
         <span
           ref={numRef}
+          className="product-num"
           style={{
             fontFamily: '"Space Mono",monospace',
             fontWeight: 700,
@@ -187,8 +361,7 @@ function ProductCard({ product }: { product: Product }) {
         </span>
 
         <div style={{ flex: 1, minWidth: 0 }}>
-          {/* Type + org row */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
+          <div className="product-meta-row" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
             <span
               style={{
                 fontFamily: '"Space Mono",monospace',
@@ -220,9 +393,9 @@ function ProductCard({ product }: { product: Product }) {
             </span>
           </div>
 
-          {/* Name */}
           <h3
             ref={nameRef}
+            className="product-name"
             style={{
               fontFamily: '"Space Mono",monospace',
               fontWeight: 700,
@@ -232,14 +405,15 @@ function ProductCard({ product }: { product: Product }) {
               lineHeight: 1.1,
               marginBottom: '0.85rem',
               margin: 0,
+              wordBreak: 'break-word',
             }}
           >
             {product.name}
           </h3>
 
-          {/* Desc */}
           <p
             ref={descRef}
+            className="product-desc"
             style={{
               fontFamily: '"Space Grotesk",sans-serif',
               fontWeight: 400,
@@ -254,40 +428,7 @@ function ProductCard({ product }: { product: Product }) {
             {product.desc}
           </p>
 
-          {/* Proof pill — parallax floats */}
-          <motion.div
-            ref={proofRef}
-            style={{
-              y: ySmooth,
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              marginBottom: '1rem',
-              background: `color-mix(in srgb, ${product.color} 8%, transparent)`,
-              border: `1px solid color-mix(in srgb, ${product.color} 30%, transparent)`,
-              padding: '0.4rem 1rem',
-              borderRadius: 9999,
-              opacity: 0,
-              width: 'fit-content',
-            }}
-          >
-            <span style={{ width: 5, height: 5, borderRadius: '50%', background: product.color, flexShrink: 0 }} />
-            <span
-              style={{
-                fontFamily: '"Space Mono",monospace',
-                fontSize: '0.6rem',
-                color: product.color,
-                letterSpacing: '0.04em',
-                fontWeight: 700,
-                whiteSpace: 'nowrap',
-              }}
-            >
-              {product.proof}
-            </span>
-          </motion.div>
-
-          {/* Stack tags */}
-          <div ref={stackRef} style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', opacity: 0 }}>
+          <div ref={stackRef} style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', opacity: 0, marginBottom: '1.2rem' }}>
             {product.stack.map((t) => (
               <span
                 key={t}
@@ -306,6 +447,10 @@ function ProductCard({ product }: { product: Product }) {
                 {t}
               </span>
             ))}
+          </div>
+
+          <div ref={linkRef} style={{ opacity: 0 }}>
+            <ProductLinkButton product={product} />
           </div>
         </div>
       </div>
@@ -362,8 +507,10 @@ export default function WorkSection() {
         padding: 'clamp(5.5rem,12vw,9rem) clamp(1.25rem,4vw,4rem) clamp(2rem,6vw,4rem)',
         position: 'relative',
         zIndex: 2,
+        overflow: 'hidden',
       }}
     >
+      <ResponsiveStyles />
       <h2
         ref={headingRef}
         style={{

@@ -85,10 +85,9 @@ export default function ContactSection() {
   }, [])
 
   const STATS = [
-    { label:'Products shipped', value:'5+', color:'var(--signal)' },
-    { label:'Years building', value:'2+', color:'var(--violet)' },
-    { label:'Team size led', value:'5', color:'var(--alert)' },
-    { label:'Uptime SLA', value:'99%', color:'var(--mint)' },
+    { label:'Products shipped', value:'15+', color:'var(--signal)' },
+    { label:'Years building', value:'3+', color:'var(--violet)' }
+    
   ]
 
   return (
@@ -100,7 +99,7 @@ export default function ContactSection() {
         Let's build.
       </h2>
       <p ref={subRef} style={{ fontFamily:'"Space Grotesk",sans-serif', fontWeight:400, fontSize:'clamp(0.9rem,1.5vw,1.05rem)', color:'var(--ink-soft)', maxWidth:'28rem', lineHeight:1.7, marginBottom:'clamp(2.5rem,8vw,5rem)', opacity:0, position:'relative', zIndex:1 }}>
-        Open to internships, freelance builds, and problems worth solving. If you have something real — reach out.
+        Open to internships, freelance builds, and problems worth solving. If you have something real  reach out.
       </p>
 
       {/* Stat pills */}
@@ -119,8 +118,7 @@ export default function ContactSection() {
       </div>
 
       <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', paddingTop:'clamp(2rem,5vw,3rem)', marginTop:'clamp(3rem,8vw,5rem)', borderTop:'1px solid var(--line)', position:'relative', zIndex:1 }}>
-        <span style={{ fontFamily:'"Space Mono",monospace', fontSize:'0.6rem', color:'var(--ink-faint)', textTransform:'uppercase', letterSpacing:'0.1em' }}>M Baqir © 2025</span>
-        <span style={{ fontFamily:'"Space Mono",monospace', fontSize:'0.6rem', color:'var(--ink-faint)', textTransform:'uppercase', letterSpacing:'0.1em' }}>KJSCE · AI &amp; Data Science</span>
+        <span style={{ fontFamily:'"Space Mono",monospace', fontSize:'0.6rem', color:'var(--ink-faint)', textTransform:'uppercase', letterSpacing:'0.1em' }}>M Baqir © 2026</span>
       </div>
     </section>
   )

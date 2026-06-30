@@ -5,10 +5,10 @@ import { splitChars, splitWords } from '../utils/splitText'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const ROLES = ['Builder.', 'Engineer.', 'Problem Solver.', 'Team Lead.']
+const ROLES = ['Developer', 'Product Builder', 'Problem Solver.', 'Team Lead.']
 
 const TECH_MARQUEE = [
-  'React', 'TypeScript', 'Node.js', 'GSAP', 'PostgreSQL', 'Apps Script', 'Tailwind', 'MongoDB',
+  'React', 'TypeScript', 'Node.js', 'GSAP', 'PostgreSQL', 'Apps Script', 'Tailwind', 'MongoDB'
 ]
 
 export default function HeroSection({ onReady }: { onReady: () => void }) {
@@ -36,9 +36,9 @@ export default function HeroSection({ onReady }: { onReady: () => void }) {
   const [roleIndex, setRoleIndex] = useState(0)
 
   const STATS = [
-    { value: 50, suffix: '+', label: 'Projects Shipped', color: 'var(--signal)', bg: 'rgba(45,91,255,0.08)', border: 'rgba(45,91,255,0.18)' },
+    { value: 15, suffix: '+', label: 'Projects Shipped', color: 'var(--signal)', bg: 'rgba(45,91,255,0.08)', border: 'rgba(45,91,255,0.18)' },
     { value: 3, suffix: '+', label: 'Years Building', color: 'var(--mint)', bg: 'rgba(0,150,107,0.08)', border: 'rgba(0,150,107,0.18)' },
-    { value: 5, suffix: '', label: 'Org Tools Built', color: 'var(--violet)', bg: 'rgba(168,85,247,0.08)', border: 'rgba(168,85,247,0.18)' },
+    { value: 5, suffix: '', label: ' Tools Built', color: 'var(--violet)', bg: 'rgba(168,85,247,0.08)', border: 'rgba(168,85,247,0.18)' },
   ]
 
   // Intro timeline + ambient motion + scroll parallax.
@@ -295,7 +295,7 @@ export default function HeroSection({ onReady }: { onReady: () => void }) {
             </div>
 
             <p ref={subRef} style={{ fontFamily: '"Space Grotesk",sans-serif', fontWeight: 400, fontSize: 'clamp(0.85rem,1.5vw,1.1rem)', color: 'var(--ink-soft)', lineHeight: 1.65, margin: 0, maxWidth: '38rem' }}>
-              I ship products that run in production, not just side projects. Full-stack web development, automation, and scalable solutions — built for real teams, not portfolios.
+              I ship products that run in production, not just side projects. Full-stack web development, automation, and scalable solutions  built for real teams, not portfolios.
             </p>
 
             <a
@@ -322,7 +322,7 @@ export default function HeroSection({ onReady }: { onReady: () => void }) {
                 Currently
               </div>
               <div style={{ fontFamily: '"Space Grotesk",sans-serif', fontSize: 'clamp(0.85rem,1.4vw,1rem)', color: 'var(--ink)', lineHeight: 1.5 }}>
-                Tech Head at <span style={{ color: 'var(--signal)', fontWeight: 600 }}>KJSCE Alumni Cell</span> — built the org's tech function from scratch.
+                Tech Head at <span style={{ color: 'var(--signal)', fontWeight: 600 }}>KJSCE Alumni Cell</span>  built the org's tech function from scratch.
               </div>
             </div>
 
@@ -397,7 +397,7 @@ export default function HeroSection({ onReady }: { onReady: () => void }) {
 
         {/* Bottom meta */}
         <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: 'clamp(0.6rem,1.4vw,1rem)', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
-          <span style={{ fontFamily: '"Space Mono",monospace', fontSize: 'clamp(0.5rem,1vw,0.6rem)', color: 'var(--ink-faint)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>KJ Somaiya School of Engineering</span>
+          <span style={{ fontFamily: '"Space Mono",monospace', fontSize: 'clamp(0.5rem,1vw,0.6rem)', color: 'var(--ink-faint)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Part Time Cricketer</span>
           <div ref={scrollIndicRef} style={{ display: 'flex', alignItems: 'center', gap: 6, opacity: 0 }}>
             <span style={{ fontFamily: '"Space Mono",monospace', fontSize: 'clamp(0.5rem,1vw,0.6rem)', color: 'var(--ink-faint)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Scroll</span>
             <svg width="10" height="14" viewBox="0 0 10 14" fill="none">

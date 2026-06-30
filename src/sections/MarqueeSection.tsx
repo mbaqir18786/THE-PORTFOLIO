@@ -39,6 +39,14 @@ const PROJECTS = [
   { name: 'Full stack', color: 'var(--mint)' },
   { name: 'Collaboration', color: 'var(--violet)' },
   { name: 'Project Management', color: 'var(--alert)' },
+  { name: 'Lenis', color: 'var(--signal)' },
+  { name: 'GSAP', color: 'var(--mint)' },
+  { name: 'Vite', color: 'var(--violet)' },
+  { name: 'Tailwind', color: 'var(--alert)' },
+  { name: 'PostgreSQL', color: 'var(--signal)' },
+  { name: 'Google Apps Script', color: 'var(--mint)' },
+  { name: 'Gmail API', color: 'var(--violet)' },
+  { name: 'UPI Flow', color: 'var(--alert)' }
   
 
 

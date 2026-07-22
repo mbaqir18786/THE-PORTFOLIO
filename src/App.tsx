@@ -13,8 +13,8 @@ function scrollToId(id: string) {
   const el = document.getElementById(id)
   if (!el) return
   const lenis = getLenis()
-  const offset = 96
-  if (lenis) lenis.scrollTo(el, { duration: 1.8, offset: -offset })
+  const offset = 64
+  if (lenis) lenis.scrollTo(el, { duration: 1.2, offset: -offset })
   else {
     const y = el.getBoundingClientRect().top + window.scrollY - offset
     window.scrollTo({ top: y, behavior: 'smooth' })
@@ -22,10 +22,10 @@ function scrollToId(id: string) {
 }
 
 const NAV_ITEMS = [
-  { label: 'home', href: '#top', ariaLabel: 'Home', rotation: -8, hoverStyles: { bgColor: '#2D5BFF', textColor: '#ffffff' }, onClick: () => scrollToId('top') },
-  { label: 'work', href: '#work', ariaLabel: 'Work', rotation: 8, hoverStyles: { bgColor: '#00966B', textColor: '#ffffff' }, onClick: () => scrollToId('work') },
-  { label: 'experience', href: '#experience', ariaLabel: 'Experience', rotation: 8, hoverStyles: { bgColor: '#7B4DD6', textColor: '#ffffff' }, onClick: () => scrollToId('experience') },
-  { label: 'contact', href: '#contact', ariaLabel: 'Contact', rotation: -8, hoverStyles: { bgColor: '#FF5A36', textColor: '#ffffff' }, onClick: () => scrollToId('contact') },
+  { label: 'home', href: '#top', onClick: () => scrollToId('top') },
+  { label: 'work', href: '#work', onClick: () => scrollToId('work') },
+  { label: 'experience', href: '#experience', onClick: () => scrollToId('experience') },
+  { label: 'contact', href: '#contact', onClick: () => scrollToId('contact') },
 ]
 
 export default function App() {
@@ -35,13 +35,10 @@ export default function App() {
 
   return (
     <div style={{ fontFamily:'"Space Mono", monospace', background:'var(--paper)' }}>
-      <div className="noise" />
-      <div style={{ opacity: navVisible ? 1 : 0, transition: 'opacity 0.7s ease' }}>
+      <div style={{ opacity: navVisible ? 1 : 0, transition: 'opacity 0.2s ease' }}>
         <BubbleMenu
           items={NAV_ITEMS}
-          menuBg="#ffffff"
-          menuContentColor="#15161A"
-          logo={<span style={{ fontFamily:'"Space Mono",monospace', fontSize:13, color:'var(--ink)', letterSpacing:'-0.02em', fontWeight:700 }}>M Baqir</span>}
+          logo={<span style={{ fontFamily:'"Space Grotesk",sans-serif', fontSize:20, color:'#000', fontWeight:900, textTransform:'uppercase' }}>MBAQIR</span>}
         />
       </div>
       <HeroSection onReady={() => setNavVisible(true)} />

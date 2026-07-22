@@ -1,6 +1,9 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import LogoLoop from '../components/LogoLoop'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const PROJECTS = [
   { name: 'HTML', color: 'var(--signal)' },
@@ -47,61 +50,38 @@ const PROJECTS = [
   { name: 'Google Apps Script', color: 'var(--mint)' },
   { name: 'Gmail API', color: 'var(--violet)' },
   { name: 'UPI Flow', color: 'var(--alert)' }
-  
-
-
 ]
 
-
-function ProjectChip({ name, color }: { name: string; color: string }) {
+function ProjectChip({ name }: { name: string }) {
   return (
-    <span style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontFamily: '"Space Mono", monospace', fontWeight: 700, fontSize: 'clamp(1.2rem, 2.6vw, 1.9rem)', letterSpacing: '-0.02em', color: 'var(--ink)', whiteSpace: 'nowrap' }}>
-      <span style={{ width: 8, height: 8, borderRadius: '50%', background: color, flexShrink: 0 }} />
+    <span style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontFamily: '"Space Grotesk", sans-serif', fontWeight: 900, fontSize: 'clamp(2rem, 4vw, 4rem)', color: '#000', whiteSpace: 'nowrap', textTransform: 'uppercase' }}>
       {name}
+      <span style={{ fontSize: '1rem', color: '#000' }}>✦</span>
     </span>
   )
 }
 
 export default function MarqueeSection() {
   const sectionRef = useRef<HTMLDivElement>(null)
-  const labelRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(labelRef.current, { opacity: 0, y: 12 }, {
-        opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 85%' }
-      })
-    }, sectionRef)
-    return () => ctx.revert()
-  }, [])
 
   return (
-    <div ref={sectionRef} style={{ background: 'var(--paper-dim)', padding: 'clamp(3rem,8vw,6rem) 0', overflow: 'hidden', borderTop: '1px solid var(--line)', borderBottom: '1px solid var(--line)', position: 'relative', zIndex: 2 }}>
-      <div ref={labelRef} style={{ padding: '0 clamp(1.25rem,4vw,4rem)', marginBottom: '2.5rem', opacity: 0, display: 'flex', alignItems: 'center', gap: 10 }}>
-        <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--mint)', display: 'inline-block' }} />
-        <span style={{ fontFamily: '"Space Mono",monospace', fontSize: '0.6rem', color: 'var(--ink-faint)', textTransform: 'uppercase', letterSpacing: '0.18em' }}>
-          Tools and Technologies I Use
-        </span>
-      </div>
-
+    <div ref={sectionRef} style={{ background: 'var(--violet)', padding: '2rem 0', overflow: 'hidden', borderBottom: '3px solid #000', position: 'relative', zIndex: 2 }}>
+      
       <div style={{ marginBottom: '1.25rem' }}>
         <LogoLoop
-          logos={PROJECTS.map(p => ({ node: <ProjectChip name={p.name} color={p.color} /> }))}
+          logos={PROJECTS.map(p => ({ node: <ProjectChip name={p.name} /> }))}
           speed={55}
-          gap={56}
-          fadeOut
-          fadeOutColor="var(--paper-dim)"
+          gap={32}
+          fadeOut={false}
           pauseOnHover
         />
       </div>
       <LogoLoop
-        logos={[...PROJECTS].reverse().map(p => ({ node: <ProjectChip name={p.name} color={p.color} /> }))}
+        logos={[...PROJECTS].reverse().map(p => ({ node: <ProjectChip name={p.name} /> }))}
         speed={42}
         direction="right"
-        gap={56}
-        fadeOut
-        fadeOutColor="var(--paper-dim)"
+        gap={32}
+        fadeOut={false}
         pauseOnHover
       />
     </div>

@@ -1,10 +1,4 @@
-import { useEffect, useRef } from 'react'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { splitChars } from '../utils/splitText'
-import ScrollReveal from '../components/ScrollReveal'
-
-gsap.registerPlugin(ScrollTrigger)
+import { useRef } from 'react'
 
 const TIMELINE = [
   { year:'2026 →', role:'Tech Head', org:'Alumni Cell, KJSCE', period:'Present', type:'Leadership', color:'var(--signal)',
@@ -22,188 +16,85 @@ const TIMELINE = [
     bullets:['SSC - Maharashtra Board','82.20%'] }
 ]
 
-// Inject responsive overrides once, globally, without disturbing existing inline styles
 function ResponsiveStyles() {
   return (
     <style>{`
-      @media (max-width: 640px) {
-        .timeline-row {
+      @media (max-width: 768px) {
+        .timeline-row-inner {
           flex-direction: column !important;
+          gap: 1.5rem !important;
         }
-        .timeline-colorbar {
-          width: 100% !important;
-          height: 3px !important;
-          margin-right: 0 !important;
-          margin-bottom: 1rem !important;
-        }
-        .timeline-inner {
-          display: flex !important;
-          flex-direction: column !important;
-          gap: 0.75rem !important;
-        }
-        .timeline-yearcol {
-          width: auto !important;
-          display: flex !important;
-          align-items: center !important;
-          gap: 0.5rem !important;
-          padding-top: 0 !important;
-        }
-        .timeline-yearcol > div {
-          margin-bottom: 0 !important;
-        }
-        .timeline-content {
-          width: 100% !important;
-        }
-        .timeline-row {
-          padding-bottom: 1.75rem !important;
-        }
-      }
-
-      @media (max-width: 420px) {
-        .timeline-role {
-          font-size: 1.5rem !important;
-        }
-        .timeline-bullet-text {
-          font-size: 0.82rem !important;
+        .timeline-left {
+          border-right: none !important;
+          border-bottom: 4px solid #000 !important;
+          padding-right: 0 !important;
+          padding-bottom: 1.5rem !important;
         }
       }
     `}</style>
   )
 }
 
-// Full-width statement, word-by-word reveal as you scroll past
 function CinematicStatement() {
-  const ref = useRef<HTMLDivElement>(null)
-
   return (
-    <div ref={ref} style={{ minHeight:'70svh', display:'flex', alignItems:'center', justifyContent:'center', position:'relative', overflow:'hidden', background:'var(--paper-dim)', zIndex:2, borderTop:'1px solid var(--line)', borderBottom:'1px solid var(--line)' }}>
-      <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 60% 50% at 50% 50%, rgba(45,91,255,0.04) 0%, transparent 70%)', pointerEvents:'none', zIndex:1 }} />
-
-      <div style={{ position:'relative', zIndex:2, maxWidth:'58rem', padding:'0 clamp(1.5rem,6vw,4rem)', textAlign:'center' }}>
-        <ScrollReveal
-          baseOpacity={0.15}
-          baseRotation={2}
-          blurStrength={3}
-          containerClassName="!my-0"
-          textClassName="!font-mono"
-        >
-          {`I don't make side projects. I build products that people actually use event portals, ticketing systems, learning platforms, automation pipelines. Real problems. Real users. Real stakes.`}
-        </ScrollReveal>
+    <div style={{ padding: '8rem 2rem', background: 'var(--alert)', borderBottom: '4px solid #000', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ maxWidth: '1000px', textAlign: 'center', border: '5px solid #000', padding: 'clamp(2rem, 5vw, 4rem)', background: '#fff', boxShadow: '16px 16px 0px 0px #000' }}>
+        <h2 style={{ fontFamily: '"Space Grotesk",sans-serif', fontWeight: 900, fontSize: 'clamp(2rem, 5vw, 4.5rem)', textTransform: 'uppercase', color: '#000', margin: 0, lineHeight: 1.1 }}>
+          I don't make side projects.<br/>
+          I build products that people actually use.
+        </h2>
+        <p style={{ fontFamily: '"Space Mono",monospace', fontSize: 'clamp(1rem, 2vw, 1.5rem)', fontWeight: 700, marginTop: '2.5rem', color: '#fff', textTransform: 'uppercase', background: '#000', display: 'inline-block', padding: '0.8rem 1.5rem', border: '3px solid #000', boxShadow: '6px 6px 0px 0px var(--mint)' }}>
+          Real problems. Real users. Real stakes.
+        </p>
       </div>
     </div>
   )
 }
 
 function TimelineRow({ item }: { item: typeof TIMELINE[0] }) {
-  const rowRef = useRef<HTMLDivElement>(null)
-  const roleRef = useRef<HTMLHeadingElement>(null)
-  const lineRef = useRef<HTMLDivElement>(null)
-  const dotRef = useRef<HTMLDivElement>(null)
-  const contentRef = useRef<HTMLDivElement>(null)
-  const colorBarRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const st = { trigger: rowRef.current, start: 'top 88%', toggleActions: 'play none none none' }
-      const tl = gsap.timeline({ scrollTrigger: st, defaults: { ease: 'power3.out' } })
-
-      tl.fromTo(lineRef.current, { scaleX: 0 }, { scaleX: 1, duration: 0.8, transformOrigin: 'left' }, 0)
-      tl.fromTo(colorBarRef.current, { scaleY: 0 }, { scaleY: 1, duration: 0.6, ease: 'power3.out', transformOrigin: 'top' }, 0.1)
-      tl.fromTo(dotRef.current, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(3)' }, 0.2)
-
-      if (roleRef.current) {
-        const chars = splitChars(roleRef.current)
-        tl.fromTo(chars, { y: '115%' }, { y: '0%', duration: 0.75, stagger: 0.02 }, 0.12)
-      }
-      tl.fromTo(contentRef.current, { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 }, 0.38)
-    }, rowRef)
-    return () => ctx.revert()
-  }, [])
-
-  const handleMouseEnter = () => {
-    gsap.to(colorBarRef.current, { opacity: 1, duration: 0.3 })
-  }
-  const handleMouseLeave = () => {
-    gsap.to(colorBarRef.current, { opacity: 0.6, duration: 0.4 })
-  }
-
   return (
-    <div
-      ref={rowRef}
-      className="timeline-row"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      style={{ position:'relative', display:'flex' }}
-    >
-      {/* Left color accent bar — wide enough to actually read as color */}
-      <div ref={colorBarRef} className="timeline-colorbar" style={{ width:4, flexShrink:0, background:item.color, opacity:0.6, borderRadius:2, marginRight:'clamp(1.5rem,4vw,3rem)', transformOrigin:'top' }} />
-
-      <div className="timeline-content" style={{ flex:1, minWidth:0 }}>
-        <div ref={lineRef} style={{ height:1, background:'var(--line)', transformOrigin:'left', marginBottom:'clamp(1.5rem,4vw,2.5rem)' }} />
-
-        <div className="timeline-inner" style={{ display:'flex', gap:'clamp(1rem,3vw,2.5rem)', paddingBottom:'clamp(2rem,5vw,3rem)' }}>
-          {/* Year + dot */}
-          <div className="timeline-yearcol" style={{ width:'clamp(4rem,7vw,6rem)', flexShrink:0, paddingTop:'0.3rem' }}>
-            <div ref={dotRef} style={{ width:8, height:8, borderRadius:'50%', background:item.color, boxShadow:`0 0 12px ${item.color}`, marginBottom:'0.5rem', opacity:0, flexShrink:0 }} />
-            <span style={{ fontFamily:'"Space Mono",monospace', fontSize:'0.6rem', color:'var(--ink-faint)', textTransform:'uppercase', letterSpacing:'0.08em', display:'block' }}>{item.year}</span>
-          </div>
-
-          {/* Content */}
-          <div style={{ flex:1, minWidth:0 }}>
-            <div style={{ display:'flex', alignItems:'center', gap:'0.6rem', marginBottom:'0.35rem', flexWrap:'wrap' }}>
-              <span style={{ fontFamily:'"Space Mono",monospace', fontSize:'0.58rem', color:item.color, textTransform:'uppercase', letterSpacing:'0.1em', border:`1px solid ${item.color}`, padding:'0.15rem 0.5rem', borderRadius:3, fontWeight:700 }}>{item.type}</span>
-              <span style={{ fontFamily:'"Space Mono",monospace', fontSize:'0.58rem', color:'var(--ink-faint)' }}>{item.period}</span>
-            </div>
-
-            <h3 ref={roleRef} className="timeline-role" style={{ fontFamily:'"Space Mono",monospace', fontWeight:700, fontSize:'clamp(1rem,2.4vw,1.8rem)', letterSpacing:'-0.04em', color:'var(--ink)', lineHeight:1.1, marginBottom:'0.3rem', wordBreak:'break-word' }}>
-              {item.role}
-            </h3>
-            <p style={{ fontFamily:'"Space Mono",monospace', fontSize:'0.62rem', color:'var(--ink-faint)', textTransform:'uppercase', letterSpacing:'0.08em', marginBottom:'0.9rem' }}>{item.org}</p>
-
-            <div ref={contentRef} style={{ opacity:0 }}>
-              <ul style={{ listStyle:'none', display:'flex', flexDirection:'column', gap:'0.45rem' }}>
-                {item.bullets.map((b, j) => (
-                  <li key={j} style={{ display:'flex', gap:'0.75rem', alignItems:'flex-start' }}>
-                    <span style={{ width:4, height:4, borderRadius:'50%', background:item.color, opacity:0.5, flexShrink:0, marginTop:'0.5rem' }} />
-                    <span className="timeline-bullet-text" style={{ fontFamily:'"Space Grotesk",sans-serif', fontWeight:400, fontSize:'clamp(0.82rem,1.3vw,0.95rem)', color:'var(--ink-soft)', lineHeight:1.65 }}>{b}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+    <div className="brutal-card timeline-row-inner" style={{ padding: '2.5rem', display: 'flex', gap: '3rem', marginBottom: '3rem', background: '#fff' }}>
+      <div className="timeline-left" style={{ flex: '1 1 200px', borderRight: '4px solid #000', paddingRight: '2rem' }}>
+        <div style={{ fontFamily: '"Space Grotesk",sans-serif', fontSize: '3rem', fontWeight: 900, color: '#000', textTransform: 'uppercase', marginBottom: '1rem', lineHeight: 1 }}>
+          {item.year}
         </div>
+        <div style={{ fontFamily: '"Space Mono",monospace', fontSize: '1rem', fontWeight: 700, textTransform: 'uppercase', background: item.color, color: '#000', padding: '0.4rem 0.8rem', border: '3px solid #000', display: 'inline-block', boxShadow: '3px 3px 0px 0px #000' }}>
+          {item.type}
+        </div>
+      </div>
+      
+      <div style={{ flex: '3 1 300px' }}>
+        <h3 style={{ fontFamily: '"Space Grotesk",sans-serif', fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', fontWeight: 900, color: '#000', textTransform: 'uppercase', margin: '0 0 0.8rem 0' }}>
+          {item.role}
+        </h3>
+        <p style={{ fontFamily: '"Space Mono",monospace', fontSize: '1.2rem', fontWeight: 700, color: '#000', textTransform: 'uppercase', borderBottom: '4px solid #000', paddingBottom: '0.5rem', marginBottom: '1.5rem', display: 'inline-block' }}>
+          {item.org}
+        </p>
+        <ul style={{ listStyle: 'square', paddingLeft: '1.5rem', color: '#000', fontFamily: '"Space Mono",monospace', fontSize: '1.1rem', lineHeight: 1.6, margin: 0, fontWeight: 700 }}>
+          {item.bullets.map((b, j) => (
+            <li key={j} style={{ marginBottom: '0.8rem' }}>{b}</li>
+          ))}
+        </ul>
       </div>
     </div>
   )
 }
 
 export default function ExperienceSection() {
-  const headingRef = useRef<HTMLHeadingElement>(null)
   const sectionRef = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      if (headingRef.current) {
-        const chars = splitChars(headingRef.current)
-        gsap.fromTo(chars, { y: '115%', rotateZ: 2 }, {
-          y: '0%', rotateZ: 0, duration: 1.1, stagger: 0.035, ease: 'power4.out',
-          scrollTrigger: { trigger: headingRef.current, start: 'top 88%' }
-        })
-      }
-    }, sectionRef)
-    return () => ctx.revert()
-  }, [])
 
   return (
     <>
       <ResponsiveStyles />
       <CinematicStatement />
-      <section id="experience" ref={sectionRef} style={{ background:'var(--paper)', scrollMarginTop: 88, padding:'clamp(5.5rem,12vw,9rem) clamp(1.25rem,4vw,4rem) clamp(2rem,6vw,4rem)', position:'relative', zIndex:2, overflow:'hidden' }}>
-        <h2 ref={headingRef} style={{ fontFamily:'"Space Mono",monospace', fontWeight:700, fontSize:'clamp(3rem,11vw,11rem)', letterSpacing:'-0.05em', lineHeight:0.88, color:'var(--ink)', marginBottom:'clamp(2.5rem,8vw,5rem)', position:'relative', zIndex:1 }}>
-          Timeline
-        </h2>
-        <div style={{ maxWidth:'54rem', position:'relative', zIndex:1 }}>
-          {TIMELINE.map((item, i) => <TimelineRow key={i} item={item} />)}
+      <section id="experience" ref={sectionRef} style={{ background: 'var(--paper)', padding: '8rem 2rem', borderBottom: '3px solid #000' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <h2 style={{ fontFamily: '"Space Grotesk",sans-serif', fontWeight: 900, fontSize: 'clamp(4rem, 10vw, 8rem)', color: '#000', textTransform: 'uppercase', borderBottom: '6px solid #000', paddingBottom: '1rem', marginBottom: '4rem', display: 'inline-block' }}>
+            Timeline
+          </h2>
+          <div>
+            {TIMELINE.map((item, i) => <TimelineRow key={i} item={item} />)}
+          </div>
         </div>
       </section>
     </>

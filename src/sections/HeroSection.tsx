@@ -80,7 +80,7 @@ export default function HeroSection({ onReady }: { onReady: () => void }) {
           </div>
 
           <div className="brutal-card" style={{ padding: '1.5rem', display: 'flex', flexWrap: 'wrap', gap: '0.8rem' }}>
-            {['Web Dev', 'React', 'Node.js', 'Deployment', 'Team Lead'].map((tag) => (
+            {['AI', 'ML', 'DL', 'Linux', 'Python', 'Web Dev', 'React', 'Node.js', 'Deployment', 'Team Lead'].map((tag) => (
               <span key={tag} style={{ fontFamily: '"Space Mono",monospace', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', color: '#000', border: '3px solid #000', padding: '0.5rem 1rem', background: '#fff', boxShadow: '2px 2px 0px 0px #000' }}>
                 {tag}
               </span>
